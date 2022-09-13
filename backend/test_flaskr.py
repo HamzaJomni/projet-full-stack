@@ -87,13 +87,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['created'])
         self.assertTrue(len(data['questions']))
 
-    def test_405_if_question_creation_not_allowed(self):
+    def test_422_if_question_creation_fails(self):
         res = self.client().post('/questions/1000', json=self.new_question)
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 405)
+        self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'method not allowed')
+        self.assertEqual(data['message'], 'unprocessable')
 
     def test_get_question_search_with_results(self):
         res = self.client().post('/questions/search', json={'searchTerm': 'Africa'})

@@ -2,9 +2,9 @@ import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-
 from flaskr import create_app
 from models import setup_db, Question, Category
+from settings import DB_TEST_NAME, DB_USER, DB_PASSWORD
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -15,8 +15,7 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        #self.database_path = "postgres://{}/{}".format('postgres', '12345','localhost:5432', self.database_name)
-        self.database_path = "postgresql://postgres:12345@localhost:5432/trivia_test"
+        self.database_path = "postgres://{}:{}@{}/{}".format(DB_USER, DB_PASSWORD,'localhost:5432', DB_TEST_NAME)
         setup_db(self.app, self.database_path)
 
         self.new_question = {    
@@ -24,10 +23,6 @@ class TriviaTestCase(unittest.TestCase):
         'answer': 'United States',
         'difficulty': 1,
         'category': '3'
-        }
-        self.questionCat = {
-            "type": "Sports",
-            "id": 4
         }
 
         # binds the app to the current context
@@ -180,7 +175,6 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertIsNone(data['question'])
 
     def test_422_play_quiz(self):
         new_quiz_round = {'previous_questions': []}

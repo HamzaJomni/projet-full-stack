@@ -434,3 +434,6 @@ The API will return three error types when requests fail:
   "success": true
 }
 ```
+
+## Auteur
+Hamza Jomni
